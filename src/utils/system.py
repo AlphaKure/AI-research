@@ -13,7 +13,7 @@ class System:
     @staticmethod
     def identify_device(devices: list[str]) :
         if len(devices) == 0:
-            print("[Error] Can Not get gpus_type")
+            print("[Error] Can Not get gpu type")
             sys.exit(-1)
         else:
             for device in devices:
@@ -40,7 +40,7 @@ class System:
                 sys.exit(-1)
         elif cls.operating_system == "Linux":
             try:
-                command_outputs = subprocess.check_output(["lspci"], universal_newlines=True)
+                command_outputs = subprocess.check_output(["lspci"], universal_newlines=True).split("\n")
                 devices = []
                 for output in command_outputs:
                     if 'VGA compatible controller' in output or '3D controller' in output:

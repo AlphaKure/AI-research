@@ -1,5 +1,6 @@
 from src.module.HWmonitor.cpu import CPU
 from src.module.HWmonitor.gpu import GPU
+from src.module.HWmonitor.ram import RAM
 
 import asyncio
 import json
@@ -45,6 +46,7 @@ class HardWareDashBoard:
                 data = {} 
                 data["cpu"] = await asyncio.to_thread(CPU.get_cpu_status)
                 data["gpu"] = await asyncio.to_thread(GPU.get_gpu_status)
+                data["ram"] = await asyncio.to_thread(RAM.get_ram_status)
                 if cls.websocket:
                     await cls.websocket.send_text(json.dumps(data))
                 await asyncio.sleep(freq)

@@ -9,20 +9,22 @@ class System:
     root : ClassVar[Path] = Path(__file__).resolve().parent.parent # point to src
 
     operating_system: ClassVar[Literal["Windows","Linux"]] = platform.system()
+    gpu_driver: ClassVar[Literal["cuda","rocm",None]] = None
     
-    @staticmethod
-    def identify_device(devices: list[str]) :
+    @classmethod
+    def identify_device(cls,devices: list[str]) :
         if len(devices) == 0:
-            print("[Error] Can Not get gpus_type")
-            sys.exit(-1)
+            sys.exit()
         else:
             for device in devices:
                 device = device.lower()
                 if  "intel" in device or "apu" in device or "uhd" in device:
                     continue # 跳過內顯
                 elif "nvidia" in device:
+                    cls.gpu_driver = "cuda"
                     return "nvidia"
                 elif "amd" in device or "radeon" in device:
+                    cls.gpu_driver = "rocm"
                     return "amd"
                 else:
                     return "unknown"
@@ -37,10 +39,10 @@ class System:
                 return cls.identify_device(devices)
             except:
                 print("[Error] Can not get gpu type")
-                sys.exit(-1)
+                sys.exit()
         elif cls.operating_system == "Linux":
             try:
-                command_outputs = subprocess.check_output(["lspci"], universal_newlines=True)
+                command_outputs = subprocess.check_output(["lspci"], universal_newlines=True).split("\n")
                 devices = []
                 for output in command_outputs:
                     if 'VGA compatible controller' in output or '3D controller' in output:
@@ -48,10 +50,10 @@ class System:
                 return cls.identify_device(devices)
             except:
                 print("[Error] Can not get gpu type")
-                sys.exit(-1)
+                sys.exit()
         else:
             print("[WARNING] Not support on this operating system")
-            sys.exit(-1)
+            sys.exit()
     
     @classmethod
     def get_os_info(cls):

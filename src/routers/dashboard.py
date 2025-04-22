@@ -1,5 +1,7 @@
 from src.module.HWmonitor import HardWareDashBoard
 
+import json
+
 from fastapi import APIRouter, WebSocketDisconnect, WebSocket 
 
 route = APIRouter(
@@ -14,7 +16,7 @@ async def dashboard(ws: WebSocket):
             try:
                 request = await ws.receive_json()
                 HardWareDashBoard.request_process(ws,request)
-            except:
-                pass # 忽略前端JSON格式錯誤
+            except json.decoder.JSONDecodeError:
+                pass # 忽略JSON格式錯誤
     except WebSocketDisconnect:
         HardWareDashBoard.end_hardware_dataflow()

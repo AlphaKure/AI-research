@@ -35,9 +35,10 @@ class HardWareDashBoard:
     @classmethod
     def end_hardware_dataflow(cls):
         cls.is_hardware_dashboard_running = False
-        if cls.tasks["hardware_dataflow"] and not cls.tasks["hardware_dataflow"].done():
-            cls.tasks["hardware_dataflow"].cancel()
-            del cls.tasks["hardware_dataflow"]
+        if "hardware_dataflow" in cls.tasks.keys():
+            if cls.tasks["hardware_dataflow"] and not cls.tasks["hardware_dataflow"].done():
+                cls.tasks["hardware_dataflow"].cancel()
+                del cls.tasks["hardware_dataflow"]
     
     @classmethod
     async def loop_get_cpu_status(cls,freq: int = 1):

@@ -10,6 +10,7 @@ app = FastAPI(
 )
 
 app.include_router(routers.system_route)
+app.include_router(routers.dashboard_route)
 
 if __name__ == "__main__":
     uvicorn.run(app,host=utils.Project_Config.ip,port=utils.Project_Config.port)

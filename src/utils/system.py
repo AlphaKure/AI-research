@@ -13,8 +13,7 @@ class System:
     @staticmethod
     def identify_device(devices: list[str]) :
         if len(devices) == 0:
-            print("[Error] Can Not get gpu type")
-            sys.exit(-1)
+            sys.exit()
         else:
             for device in devices:
                 device = device.lower()
@@ -37,7 +36,7 @@ class System:
                 return cls.identify_device(devices)
             except:
                 print("[Error] Can not get gpu type")
-                sys.exit(-1)
+                sys.exit()
         elif cls.operating_system == "Linux":
             try:
                 command_outputs = subprocess.check_output(["lspci"], universal_newlines=True).split("\n")
@@ -48,10 +47,10 @@ class System:
                 return cls.identify_device(devices)
             except:
                 print("[Error] Can not get gpu type")
-                sys.exit(-1)
+                sys.exit()
         else:
             print("[WARNING] Not support on this operating system")
-            sys.exit(-1)
+            sys.exit()
     
     @classmethod
     def get_os_info(cls):

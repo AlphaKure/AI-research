@@ -1,4 +1,5 @@
 from src.module.HWmonitor.cpu import CPU
+from src.module.HWmonitor.gpu import GPU
 
 import asyncio
 import json
@@ -41,7 +42,9 @@ class HardWareDashBoard:
     async def loop_get_cpu_status(cls,freq: int = 1):
         try:
             while cls.is_hardware_dashboard_running:
-                data = await asyncio.to_thread(CPU.get_cpu_status)
+                data = {} 
+                data["cpu"] = await asyncio.to_thread(CPU.get_cpu_status)
+                data["gpu"] = await asyncio.to_thread(GPU.get_gpu_status)
                 if cls.websocket:
                     await cls.websocket.send_text(json.dumps(data))
                 await asyncio.sleep(freq)

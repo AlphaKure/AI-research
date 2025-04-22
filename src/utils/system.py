@@ -2,7 +2,7 @@ from pathlib import Path
 import platform
 import subprocess
 import sys
-from typing import ClassVar,Literal, Union
+from typing import ClassVar,Literal
 
 class System:
 

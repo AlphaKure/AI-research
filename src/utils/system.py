@@ -2,16 +2,17 @@ from pathlib import Path
 import platform
 import subprocess
 import sys
-from typing import ClassVar,Literal
+from typing import ClassVar,Literal, Union
 
 class System:
 
     root : ClassVar[Path] = Path(__file__).resolve().parent.parent # point to src
 
     operating_system: ClassVar[Literal["Windows","Linux"]] = platform.system()
+    gpu_driver: ClassVar[Literal["cuda","rocm",None]] = None
     
-    @staticmethod
-    def identify_device(devices: list[str]) :
+    @classmethod
+    def identify_device(cls,devices: list[str]) :
         if len(devices) == 0:
             sys.exit()
         else:
@@ -20,8 +21,10 @@ class System:
                 if  "intel" in device or "apu" in device or "uhd" in device:
                     continue # 跳過內顯
                 elif "nvidia" in device:
+                    cls.gpu_driver = "cuda"
                     return "nvidia"
                 elif "amd" in device or "radeon" in device:
+                    cls.gpu_driver = "rocm"
                     return "amd"
                 else:
                     return "unknown"

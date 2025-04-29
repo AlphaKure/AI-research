@@ -10,4 +10,4 @@ class RAM:
         if System.operating_system == "Windows":
             return {"used": mem_info.used/ (1024**3), "total": mem_info.total/ (1024**3)}
         elif System.operating_system == "Linux":
-            return{"used": (mem_info.total-mem_info.available)/ (1024**3), "total": mem_info.total/ (1024**3)}
+            return{"used": (mem_info.total-mem_info.free)/ (1024**3), "total": mem_info.total/ (1024**3)}

@@ -6,7 +6,8 @@ import re
 import shutil
 import subprocess
 
-import clr
+if System.operating_system == "Windows":
+    import clr
 
 class CPU:
 

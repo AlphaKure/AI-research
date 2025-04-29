@@ -18,7 +18,7 @@ class GPU:
     def get_gpu_status_nvidia(cls):
         
         try:
-            outputs = subprocess.check_output(["nvidia-smi","--query-gpu=name,temperature.gpu,memory.used,memory.total,utilization.gpu"],universal_newlines=True)
+            outputs = subprocess.check_output(["nvidia-smi","--query-gpu=name,temperature.gpu,memory.used,memory.total,utilization.gpu","--format=csv"],universal_newlines=True)
             outputs = outputs.strip().split("\n")[1:] # skip title
             info = []
             for output in outputs:
